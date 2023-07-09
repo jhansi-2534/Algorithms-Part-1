@@ -1,0 +1,63 @@
+#include <iostream>
+#include <vector>
+
+class Canonical {
+private:
+    std::vector<int> members;
+
+    int findRoot(int memberId) {
+        bool foundRoot = false;
+        int rootId = memberId;
+        while (!foundRoot) {
+            int newId = members[rootId];
+            if (newId == members[newId]) {
+                foundRoot = true;
+            }
+            rootId = newId;
+        }
+        return rootId;
+    }
+
+public:
+    void setMembers(const std::vector<int>& members) {
+        this->members = members;
+    }
+
+    void unionOperation(int memberId, int memberIdToUnion) {
+        int rootMemberId = findRoot(memberId);
+        int rootMemberIdToUnion = findRoot(memberIdToUnion);
+        if (rootMemberId >= rootMemberIdToUnion) {
+            members[rootMemberIdToUnion] = rootMemberId;
+        } else {
+            members[rootMemberId] = rootMemberIdToUnion;
+        }
+    }
+
+    bool connected(int memberId, int memberIdToCheck) {
+        int rootMemberId = findRoot(memberId);
+        int rootMemberIdToCheck = findRoot(memberIdToCheck);
+        return rootMemberId == rootMemberIdToCheck;
+    }
+
+    int find(int memberId) {
+        return findRoot(memberId);
+    }
+};
+
+int main() {
+    Canonical percolation;
+    percolation.setMembers({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    percolation.unionOperation(3, 6);
+    percolation.unionOperation(5, 7);
+    percolation.unionOperation(1, 10);
+    percolation.unionOperation(6, 5);
+    percolation.unionOperation(1, 7);
+    percolation.unionOperation(2, 8);
+
+    std::cout << percolation.connected(6, 3) << std::endl;
+    std::cout << percolation.connected(0, 3) << std::endl;
+    std::cout << percolation.find(7) << std::endl;
+    std::cout << percolation.find(0) << std::endl;
+
+    return 0;
+}
