@@ -1,0 +1,55 @@
+int solve(int* A, int n1, int B) {
+    int peak=-1;
+    //find peak
+    int left=0;
+    int right=n1-1;
+    int mid;
+    while(left<=right){
+        mid=left+(right-left)/2;
+        if((mid>0 || A[mid]>A[mid-1] )&&(mid<n1-1 || A[mid]>A[mid+1]) ){
+            peak=mid;
+            break;
+        }
+        //move towards peak
+        else if(mid>0 || A[mid]<A[mid-1]){
+        //go left
+            right=mid-1;
+        }
+        else {
+            left=mid+1;
+        }
+    }
+    //binary search on increasing sequence
+    left = 0, right = peak, mid = -1 ;
+    while(left <= right){
+        mid = (left + right)/2 ;
+
+        if(A[mid] == B) return mid ;
+
+        else if(A[mid] > B){
+            right = mid-1 ;
+        }
+
+        else{
+            left = mid+1 ;
+        }
+    }
+//binary search on decreasing sequence
+left = peak+1, right = n1-1, mid = -1 ;
+
+    while(left <= right){
+        mid = (left + right)/2 ;
+
+        if(A[mid] == B) return mid ;
+
+        else if(A[mid] > B){
+            left = mid+1 ;
+        }
+
+        else{
+            
+            right = mid-1 ;
+        }
+    }  
+return -1;
+}
