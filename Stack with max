@@ -1,0 +1,53 @@
+///A stack with max is a data structure that supports the usual stack operations (push, pop) in addition to an operation that returns the maximum element in the stack at any given time. Essentially, it is a stack that keeps track of the maximum element in the stack efficiently.
+
+///There are multiple ways to implement a stack with max. One common approach is to use an auxiliary stack to keep track of the maximum element
+
+
+#include <iostream>
+#include <stack>
+
+using namespace std;
+
+class StackWithMax {
+    stack<int> mainStack;  // main stack to store elements
+    stack<int> maxStack;   // auxiliary stack to track maximum elements
+
+public:
+    void push(int item) {
+        mainStack.push(item);
+        if (maxStack.empty() || item >= maxStack.top()) {
+            maxStack.push(item);
+        }
+    }
+
+    void pop() {
+        if (!mainStack.empty()) {
+            int item = mainStack.top();
+            mainStack.pop();
+            if (item == maxStack.top()) {
+                maxStack.pop();
+            }
+        }
+    }
+
+    int max() {
+        if (!maxStack.empty()) {
+            return maxStack.top();
+        }
+        return -1;  // or any appropriate value to indicate an empty stack
+    }
+};
+
+int main() {
+    StackWithMax stack;
+    stack.push(5);
+    stack.push(2);
+    stack.push(10);
+    stack.push(6);
+    cout << stack.max() << endl;  // Output: 10
+    stack.pop();
+    stack.pop();
+    cout << stack.max() << endl;  // Output: 5
+
+    return 0;
+}
